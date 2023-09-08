@@ -14,6 +14,13 @@ public static class Parser
 
     private static CalculatorOperation ParseOperation(string arg)
     {
-        throw new NotImplementedException();
+        switch (arg)
+        {
+            case "+":
+                return CalculatorOperation.Plus;
+                break;
+            default:
+                return CalculatorOperation.Undefined;
+        }
     }
 }
