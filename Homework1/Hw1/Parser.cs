@@ -7,11 +7,7 @@ public static class Parser
         out CalculatorOperation operation,
         out double val2)
     {
-        if (args == null || !IsArgLengthSupported(args))
-        {
-            throw new ArgumentException("Invaid input");
-        }
-        if (!double.TryParse(args[0], out val1) | !double.TryParse(args[2], out val2))
+        if (!IsArgLengthSupported(args) | !double.TryParse(args[0], out val1) | !double.TryParse(args[2], out val2))
         {
             throw new ArgumentException("Invalid arguments for calculating");
         }
