@@ -24,7 +24,7 @@
         ldc.i4.3
         beq.s Devide
         
-        newobj instance void [mscorlib]System.ArgumentOutOfRangeException::.ctor()
+        newobj instance void [mscorlib]System.InvalidOperationException::.ctor()
         throw
         
         Plus:

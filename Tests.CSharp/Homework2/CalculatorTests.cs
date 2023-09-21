@@ -23,7 +23,7 @@ public class CalculatorTests
     public void TestInvalidOperation()
     {
         //assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => Hw2.Calculator.Calculate(0, CalculatorOperation.Undefined, 10));
+        Assert.Throws<InvalidOperationException>(() => Hw2.Calculator.Calculate(0, CalculatorOperation.Undefined, 10));
     }
 
     [Homework(Homeworks.HomeWork2)]
