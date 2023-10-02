@@ -22,9 +22,10 @@ let parseOperation (arg : string) =
     | arg -> CalculatorOperation.Undefined
     
 let parseCalcArguments(args : string[]) =
+    if not(isArgLengthSupported(args)) then invalidArg "" ""
     let isSuccessVal1, val1 = Double.TryParse(args[0])
     let isSuccessVal2, val2 = Double.TryParse(args[2])
     let operation = parseOperation(args[1])
-    if not (isSuccessVal1 && isSuccessVal2 && isArgLengthSupported(args)) then invalidArg "" ""
+    if not (isSuccessVal1 && isSuccessVal2) then invalidArg "" ""
     elif operation = CalculatorOperation.Undefined then invalidOp ""
     else {arg1 =  val1; arg2 = val2; operation = operation}
