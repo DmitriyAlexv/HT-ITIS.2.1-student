@@ -78,7 +78,7 @@ let ``values parsed correctly`` (value1, operation, value2, expectedValue) =
     match result with
     | Ok resultOk ->
         match resultOk with
-        | arg1, operation, arg2 -> Assert.True((abs (expectedValue - Calculator.calculate arg1 operation arg2)) |> decimal < epsilon)
+        | arg1, operation, arg2 -> Assert.True((abs (expectedValue - Hw5.Calculator.calculate arg1 operation arg2)) |> decimal < epsilon)
     | Error e -> raise (InvalidOperationException(e.ToString()))
         
 [<HomeworkTheory(Homeworks.HomeWork5)>]
