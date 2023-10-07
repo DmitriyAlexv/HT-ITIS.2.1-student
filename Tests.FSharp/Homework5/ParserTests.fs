@@ -72,7 +72,7 @@ let ``values parsed correctly`` (value1, operation, value2, expectedValue) =
     let values = [|value1;operation;value2|]
     
     //act
-    let result = parseCalcArguments<Double,Double> values
+    let result = parseCalcArguments<Decimal,Decimal> values
     
     //assert
     match result with
