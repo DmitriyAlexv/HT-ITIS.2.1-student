@@ -22,7 +22,6 @@ let inline isOperationSupported (arg1, operation, arg2): Result<('a * Calculator
 let parseArgs (args: string[]): Result<('a * string * 'b), Message> when 'a: struct and 'b: struct=
     let culture = System.Globalization.CultureInfo("en-US")
     let numberStyle = NumberStyles.Any
-    let methods = typeof<'a>.GetMethods()
     let parseMethodA = typeof<'a>.GetMethod("TryParse", [| typeof<string> ;typeof<NumberStyles>;typeof<IFormatProvider>; typeof<'a>.MakeByRefType()|])
     let parseMethodB = typeof<'b>.GetMethod("TryParse", [| typeof<string> ;typeof<NumberStyles>;typeof<IFormatProvider>; typeof<'a>.MakeByRefType()|])
     let argsArr1: obj[] = [|args[0];numberStyle;culture;null|]
