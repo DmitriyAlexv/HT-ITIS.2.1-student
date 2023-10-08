@@ -1,6 +1,7 @@
 ﻿module Hw5.Parser
 
 open System
+open System.Globalization
 open Hw5.Calculator
 open Hw5.MaybeBuilder
 open Microsoft.FSharp.Core
@@ -16,17 +17,19 @@ let inline isOperationSupported (arg1, operation:CalculatorOperation, arg2): Res
     else Error Message.WrongArgFormatOperation
 
 let parseArgs (args: string[]): Result<('a * CalculatorOperation * 'b), Message> when 'a: struct and 'b: struct=
-    let f = typeof<'a>
-    let parseMethodA = typeof<'a>.GetMethod("TryParse", [| typeof<string> ;typeof<'a>.MakeByRefType()|])
-    let parseMethodB = typeof<'b>.GetMethod("TryParse", [| typeof<string> ;typeof<'a>.MakeByRefType()|])
-    let argsArr1: obj[] = [|args[0];null|]
-    let argsArr2: obj[] = [|args[2];null|]
+    let culture = System.Globalization.CultureInfo("en-US")
+    let numberStyle = NumberStyles.Any
+    let methods = typeof<'a>.GetMethods()
+    let parseMethodA = typeof<'a>.GetMethod("TryParse", [| typeof<string> ;typeof<NumberStyles>;typeof<IFormatProvider>; typeof<'a>.MakeByRefType()|])
+    let parseMethodB = typeof<'b>.GetMethod("TryParse", [| typeof<string> ;typeof<NumberStyles>;typeof<IFormatProvider>; typeof<'a>.MakeByRefType()|])
+    let argsArr1: obj[] = [|args[0];numberStyle;culture;null|]
+    let argsArr2: obj[] = [|args[2];numberStyle;culture;null|]
     let isSuccessVal1 = parseMethodA.Invoke(null, argsArr1) |> unbox<bool> 
     let isSuccessVal2 = parseMethodB.Invoke(null, argsArr2) |> unbox<bool>
     if not (isSuccessVal1 && isSuccessVal2) then Error Message.WrongArgFormat
     else
-    let val1 = argsArr1[1]|> unbox<'a>
-    let val2 = argsArr2[1]|> unbox<'b>
+    let val1 = argsArr1[3]|> unbox<'a>
+    let val2 = argsArr2[3]|> unbox<'b>
     match args[1] with
     | Calculator.plus -> Ok (val1, CalculatorOperation.Plus, val2)
     | Calculator.minus -> Ok (val1, CalculatorOperation.Minus, val2)
