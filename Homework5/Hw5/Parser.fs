@@ -11,12 +11,15 @@ let isArgLengthSupported (args:string[]): Result<string array,Message> =
     else Error Message.WrongArgLength
     
 [<System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>]
-let inline isOperationSupported (arg1, operation:CalculatorOperation, arg2): Result<('a * CalculatorOperation * 'b), Message> =
-    let _operation = Convert.ToInt32(operation)
-    if 0 <= _operation && _operation <= 3 then Ok (arg1, operation, arg2)
-    else Error Message.WrongArgFormatOperation
-
-let parseArgs (args: string[]): Result<('a * CalculatorOperation * 'b), Message> when 'a: struct and 'b: struct=
+let inline isOperationSupported (arg1, operation, arg2): Result<('a * CalculatorOperation * 'b), Message> =
+    match operation with
+    | Calculator.plus -> Ok (arg1, CalculatorOperation.Plus, arg2)
+    | Calculator.minus -> Ok (arg1, CalculatorOperation.Minus, arg2)
+    | Calculator.multiply -> Ok (arg1, CalculatorOperation.Multiply, arg2)
+    | Calculator.divide -> Ok (arg1, CalculatorOperation.Divide, arg2)
+    | operation -> Error Message.WrongArgFormatOperation
+    
+let parseArgs (args: string[]): Result<('a * string * 'b), Message> when 'a: struct and 'b: struct=
     let culture = System.Globalization.CultureInfo("en-US")
     let numberStyle = NumberStyles.Any
     let methods = typeof<'a>.GetMethods()
@@ -30,12 +33,7 @@ let parseArgs (args: string[]): Result<('a * CalculatorOperation * 'b), Message>
     else
     let val1 = argsArr1[3]|> unbox<'a>
     let val2 = argsArr2[3]|> unbox<'b>
-    match args[1] with
-    | Calculator.plus -> Ok (val1, CalculatorOperation.Plus, val2)
-    | Calculator.minus -> Ok (val1, CalculatorOperation.Minus, val2)
-    | Calculator.multiply -> Ok (val1, CalculatorOperation.Multiply, val2)
-    | Calculator.divide -> Ok (val1, CalculatorOperation.Divide, val2)
-    | _ -> Ok (val1, enum<CalculatorOperation>(4), val2)
+    Ok (val1, args[1], val2)
 
 
 [<System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>]
