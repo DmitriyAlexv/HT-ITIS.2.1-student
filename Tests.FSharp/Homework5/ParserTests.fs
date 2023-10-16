@@ -72,14 +72,14 @@ let ``values parsed correctly`` (value1, operation, value2, expectedValue) =
     let values = [|value1;operation;value2|]
     
     //act
-    let result = parseCalcArguments values
+    let result = parseCalcArguments<Decimal,Decimal> values
     
     //assert
     match result with
     | Ok resultOk ->
         match resultOk with
-        | arg1, operation, arg2 -> Assert.True((abs (expectedValue - Calculator.calculate arg1 operation arg2)) |> decimal < epsilon)
-    | Error e -> raise (InvalidOperationException(e))
+        | arg1, operation, arg2 -> Assert.True((abs (expectedValue - Hw5.Calculator.calculate arg1 operation arg2)) |> decimal < epsilon)
+    | Error e -> raise (InvalidOperationException(e.ToString()))
         
 [<HomeworkTheory(Homeworks.HomeWork5)>]
 [<InlineData("f", "+", "3")>]
