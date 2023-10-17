@@ -67,6 +67,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hw13", "Homework13\Hw.13\Hw
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Homework13", "Homework13", "{245E29C9-CF93-47FF-8788-34FBB6404AEA}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ConsoleClient", "Homework6\ConsoleClient\ConsoleClient.fsproj", "{7AD1E3A8-3A0E-47E5-9C0F-A4E5B737D780}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -137,6 +139,10 @@ Global
 		{6B41684D-DEB8-49C2-A227-EC6A28A975F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B41684D-DEB8-49C2-A227-EC6A28A975F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B41684D-DEB8-49C2-A227-EC6A28A975F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AD1E3A8-3A0E-47E5-9C0F-A4E5B737D780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AD1E3A8-3A0E-47E5-9C0F-A4E5B737D780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AD1E3A8-3A0E-47E5-9C0F-A4E5B737D780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AD1E3A8-3A0E-47E5-9C0F-A4E5B737D780}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,6 +165,7 @@ Global
 		{CEAF66CA-ED9A-40C4-AEA6-8999DAEB559A} = {6E27D96D-F516-48F1-A26A-4F420D4E974B}
 		{59193DFB-BA52-4015-8F68-EC440846869E} = {952B0AF3-D100-450C-A770-6483D865DA53}
 		{6B41684D-DEB8-49C2-A227-EC6A28A975F4} = {245E29C9-CF93-47FF-8788-34FBB6404AEA}
+		{7AD1E3A8-3A0E-47E5-9C0F-A4E5B737D780} = {AE1440FB-9A01-4A1C-8271-EF37A4FB668E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0D29CB85-791C-4B20-93CD-6FFE27678C9C}
