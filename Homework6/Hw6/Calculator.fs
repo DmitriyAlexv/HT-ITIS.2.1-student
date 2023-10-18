@@ -9,8 +9,7 @@ let calculate (args: arguments): Result<string, string> =
     | CalculatorOperation.Plus -> Ok ((args.value1 + args.value2).ToString())
     | CalculatorOperation.Minus -> Ok ((args.value1 - args.value2).ToString())
     | CalculatorOperation.Multiply -> Ok ((args.value1 * args.value2).ToString())
-    | CalculatorOperation.Divide ->
+    | _ ->
         if (args.value2 = 0m) then Ok "DivideByZero"
         else Ok ((args.value1 / args.value2).ToString())
-    | _ -> InvalidOperationException() |> raise
     
