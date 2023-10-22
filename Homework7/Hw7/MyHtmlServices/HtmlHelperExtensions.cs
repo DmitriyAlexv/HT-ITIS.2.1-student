@@ -108,7 +108,8 @@ public static class HtmlHelperExtensions
         
         if (value == null || value.ToString() == String.Empty)
         {
-            message = Messages.RequiredMessage;
+            var req = (RequiredAttribute)propertyInfo.GetCustomAttribute(typeof(RequiredAttribute));
+            message = req == null ? "" : Messages.RequiredMessage;
         }
         else if (value is int val && (val < 10 || val > 100))
         {
@@ -116,7 +117,8 @@ public static class HtmlHelperExtensions
         }
         else if (value.ToString()!.Length > 30)
         {
-            message = $"{propertyInfo.Name.SeparateByCamelCase()} {Messages.MaxLengthMessage}";
+            var maxlen = (MaxLengthAttribute)propertyInfo.GetCustomAttribute(typeof(MaxLengthAttribute));
+            message = maxlen == null ? "" : $"{propertyInfo.Name.SeparateByCamelCase()} {Messages.MaxLengthMessage}";
         }
 
         return message == String.Empty;
