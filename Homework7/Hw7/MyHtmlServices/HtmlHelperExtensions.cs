@@ -13,14 +13,12 @@ public static class HtmlHelperExtensions
     public static IHtmlContent MyEditorForModel(this IHtmlHelper helper)
     {
         var type = helper.ViewData.ModelMetadata.ModelType;
-        var result = new HtmlContentBuilder();
-        
-        foreach (var property in type.GetProperties())
-        {
-            result.AppendHtml(HandleProperty(property, helper.ViewData.Model));
-        }
-        
-        return result;
+        IHtmlContentBuilder result = new HtmlContentBuilder();
+        return type.GetProperties().Aggregate(
+            result, 
+            (htmlBuilder, propertyInfo) => 
+                htmlBuilder.AppendHtml(HandleProperty(propertyInfo, helper.ViewData.Model))
+            );
     }
 
     private static IHtmlContent HandleProperty(this PropertyInfo propertyInfo, object? model)
@@ -31,7 +29,7 @@ public static class HtmlHelperExtensions
         html.InnerHtml.AppendFormat("<p>");
         html.InnerHtml.AppendHtml(propertyInfo.GetPropertyInput());
         html.InnerHtml.AppendFormat("</p>");
-        html.InnerHtml.AppendHtml(propertyInfo.HandlePropertyValidation(model));
+        html.InnerHtml.AppendHtml(propertyInfo.HandlePropertyValidation(model)!);
         
         return html;
     }
@@ -40,12 +38,10 @@ public static class HtmlHelperExtensions
     {
         var html = new TagBuilder("label");
 
-        var display = (DisplayAttribute) propertyInfo.GetCustomAttribute(typeof(DisplayAttribute));
+        var display = propertyInfo.GetCustomAttribute<DisplayAttribute>();
         
         html.Attributes.Add("for", propertyInfo.Name);
-        html.InnerHtml.AppendHtmlLine(display == null || display.Name == String.Empty ? 
-            propertyInfo.Name.SeparateByCamelCase() : display.Name!);
-        
+        html.InnerHtml.AppendHtmlLine(display?.Name ?? propertyInfo.Name.SeparateByCamelCase());
         
         return html;
     }
@@ -81,14 +77,14 @@ public static class HtmlHelperExtensions
 
     private static IHtmlContent? HandlePropertyValidation(this PropertyInfo propertyInfo, object? model)
     {
-        if (model == null || propertyInfo.PropertyType.IsEnum) 
+        if (model == null)
             return null;
-
-        var value = propertyInfo.GetValue(model);
-        Validate(propertyInfo, value, out var message);
-        return GetSpan(message);
+        
+        var message = Validate(propertyInfo, model);
+        
+        return message?.GetSpan();
     }
-    private static IHtmlContent? GetSpan(string errorMessage)
+    private static IHtmlContent GetSpan(this string errorMessage)
     {
         var html = new TagBuilder("span");
         
@@ -102,25 +98,16 @@ public static class HtmlHelperExtensions
         return String.Join(" ", Regex.Split(str, "(?=\\p{Lu})")).TrimStart();
     }
 
-    private static bool Validate(PropertyInfo propertyInfo, object? value, out string message)
+    private static string? Validate(PropertyInfo propertyInfo, object model)
     {
-        message = String.Empty;
-        
-        if (value == null || value.ToString() == String.Empty)
-        {
-            var req = (RequiredAttribute)propertyInfo.GetCustomAttribute(typeof(RequiredAttribute));
-            message = req == null ? "" : Messages.RequiredMessage;
-        }
-        else if (value is int val && (val < 10 || val > 100))
-        {
-            message = $"{propertyInfo.Name.SeparateByCamelCase()} {Messages.RangeMessage}";
-        }
-        else if (value.ToString()!.Length > 30)
-        {
-            var maxlen = (MaxLengthAttribute)propertyInfo.GetCustomAttribute(typeof(MaxLengthAttribute));
-            message = maxlen == null ? "" : $"{propertyInfo.Name.SeparateByCamelCase()} {Messages.MaxLengthMessage}";
-        }
-
-        return message == String.Empty;
+        var result = new List<ValidationResult>();
+        Validator.TryValidateProperty(
+            propertyInfo.GetValue(model),
+            new ValidationContext(model)
+            {
+                MemberName = propertyInfo.Name
+            },
+            result);
+        return result.FirstOrDefault()?.ErrorMessage ?? null;
     }
 } 
