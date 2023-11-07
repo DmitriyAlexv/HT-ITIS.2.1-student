@@ -3,33 +3,33 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hw8.Calculator;
 
-public class Parser
+public class Parser: IParser
 {
-    public static (double, Operation, double) ParseCalcArguments(string val1, string op, string val2)
+    public (double, Operation, double) ParseCalcArguments(string val1, string op, string val2)
     {
-        if (!(Double.TryParse(val1, NumberStyles.Any, CultureInfo.InvariantCulture, out var value1) &&
-            Double.TryParse(val2, NumberStyles.Any, CultureInfo.InvariantCulture, out var value2)))
+        if (!Double.TryParse(val1, NumberStyles.Any, CultureInfo.InvariantCulture, out var value1) ||
+            !Double.TryParse(val2, NumberStyles.Any, CultureInfo.InvariantCulture, out var value2))
         {
-            throw new ArgumentException();
+            throw new ArgumentException(Messages.InvalidNumberMessage);
         }
 
         var operation = ParseOperation(op);
         if (operation == Operation.Invalid)
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException(Messages.InvalidOperationMessage);
         }
 
         return (value1, operation, value2);
     }
 
-    private static Operation ParseOperation(string op)
+    private Operation ParseOperation(string op)
     {
-        return op switch
+        return op.ToLower() switch
         {
-            "Plus" => Operation.Plus,
-            "Minus" => Operation.Minus,
-            "Multiply" => Operation.Multiply,
-            "Divide" => Operation.Divide,
+            "plus" => Operation.Plus,
+            "minus" => Operation.Minus,
+            "multiply" => Operation.Multiply,
+            "divide" => Operation.Divide,
             _ => Operation.Invalid
         };
     }

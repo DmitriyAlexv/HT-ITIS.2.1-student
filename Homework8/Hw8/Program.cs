@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Hw8.Calculator;
+using Hw8.ExceptionHandler;
 
 namespace Hw8;
 
@@ -10,6 +11,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Services.AddScoped<IParser, Parser>();
         builder.Services.AddScoped<ICalculator, Calculator.Calculator>();
         builder.Services.AddControllersWithViews();
 
@@ -26,7 +28,9 @@ public class Program
 
         app.UseRouting();
         app.UseAuthorization();
-
+        
+        app.UseExceptionMiddleware();
+        
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Calculator}/{action=Index}");
