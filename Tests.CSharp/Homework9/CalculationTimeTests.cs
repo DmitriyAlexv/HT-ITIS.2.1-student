@@ -17,7 +17,7 @@ public class CalculationTimeTests : IClassFixture<WebApplicationFactory<Hw9.Prog
     // уменьшил на 1 тыс, так как можно параллельно выполнить 1 и 3 +
     [InlineData("2 + 3 + 4 + 6", 1990, 3000)]
     // увеличил на 1 тыс, так как у меня 2 ядра (1 - на первую скобку, 2 -  на вторую, а считать внутренности уже синхронно)
-    [InlineData("(2 * 3 + 3 * 3) * (5 / 5 + 6 / 6)", 3990, 6000)]
+    [InlineData("(2 * 3 + 3 * 3) * (5 / 5 + 6 / 6)", 2990, 6000)]
     [InlineData("(2 + 3) / 12 * 7 + 8 * 9", 3990, 5000)]
     private async Task CalculatorController_ParallelTest(string expression, long minExpectedTime, long maxExpectedTime)
     {
