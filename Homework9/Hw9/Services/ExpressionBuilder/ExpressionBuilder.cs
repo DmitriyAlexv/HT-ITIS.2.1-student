@@ -145,15 +145,14 @@ public class ExpressionBuilder
         var val1Expression = expressions[operationIndex - 1];
         var val2Expression = expressions[operationIndex + 1];
         
-        var task = new Task<ExpressionBuilderResult>(() =>
-        {
-            Thread.Sleep(1000);
-            return val1String == "?" ? val2String == "?"
-                    ? CreateExpressionFromTwoValues(val1Expression, currentOp, val2Expression)
+        var task = new Task<ExpressionBuilderResult>(() => 
+            val1String == "?" ? 
+                val2String == "?" ?
+                    CreateExpressionFromTwoValues(val1Expression, currentOp, val2Expression)
                     : CreateExpressionFromTwoValues(val1Expression, currentOp, val2String)
-                : val2String == "?" ? CreateExpressionFromTwoValues(val1String, currentOp, val2Expression)
-                : CreateExpressionFromTwoValues(val1String, currentOp, val2String);
-        });
+                : val2String == "?" ? 
+                    CreateExpressionFromTwoValues(val1String, currentOp, val2Expression)
+                    : CreateExpressionFromTwoValues(val1String, currentOp, val2String));
        tasks.Add(task);
        
        expressions[operationIndex - 1] = null!;
