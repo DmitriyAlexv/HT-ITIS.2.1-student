@@ -127,7 +127,7 @@ public class StringExpressionParser
                     }
                 }
                 result.Add(mathExpression.GetRange(i, j - i).Aggregate("", (x,y) => $"{x}{y}"));
-                if (result[^1].Count(x => x == '.') > 1 || (result[^1].Length >= 2 && result[^1][0] == '0' && result[^1][1] != '.'))
+                if (result[^1].Count(x => x == '.') > 1 || result[^1][^1] == '.')
                     return new StringExpressionParserResult(MathErrorMessager.NotNumberMessage(result[^1]));
                 i = j - 1;
             }
