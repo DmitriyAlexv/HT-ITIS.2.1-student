@@ -37,6 +37,7 @@ public class IntegrationCalculatorControllerTests : IClassFixture<WebApplication
     [InlineData("10 : 2", $"{MathErrorMessager.UnknownCharacter} :")]
     [InlineData("3 - 4 / 2.2.3", $"{MathErrorMessager.NotNumber} 2.2.3")]
     [InlineData("2 - 2.23.1 - 23", $"{MathErrorMessager.NotNumber} 2.23.1")]
+    [InlineData("2 - 2. - 23", $"{MathErrorMessager.NotNumber} 2.")]
     [InlineData("8 - / 2", $"{MathErrorMessager.TwoOperationInRow} - and /")]
     [InlineData("8 + (34 - + 2)", $"{MathErrorMessager.TwoOperationInRow} - and +")]
     [InlineData("4 - 10 * (/10 + 2)", $"{MathErrorMessager.InvalidOperatorAfterParenthesis} (/")]
