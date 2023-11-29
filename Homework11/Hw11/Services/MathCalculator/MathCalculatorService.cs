@@ -2,13 +2,21 @@ using System.Linq.Expressions;
 using Hw11.Services.GraphBuilder;
 using System.Diagnostics.CodeAnalysis;
 using Hw11.ErrorMessages;
+using Hw11.Services.ExpressionBuilder;
 
 namespace Hw11.Services.MathCalculator;
 
 public class MathCalculatorService : IMathCalculatorService
 {
-    private readonly ExpressionBuilder.ExpressionBuilder _expressionBuilder = new();
-    private readonly GraphBuilder.GraphBuilder _graphBuilder = new();
+    private readonly IExpressionBuilder _expressionBuilder;
+    private readonly IGraphBuilder _graphBuilder;
+
+    public MathCalculatorService(IExpressionBuilder expressionBuilder, IGraphBuilder graphBuilder)
+    {
+        _expressionBuilder = expressionBuilder;
+        _graphBuilder = graphBuilder;
+    }
+    
     public async Task<double> CalculateMathExpressionAsync(string? expression)
     {
         var buildResult = await _expressionBuilder.CreateExpressionFromString(expression);

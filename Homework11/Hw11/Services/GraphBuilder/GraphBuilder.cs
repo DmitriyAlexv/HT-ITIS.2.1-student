@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 
 namespace Hw11.Services.GraphBuilder;
 
-public class GraphBuilder
+public class GraphBuilder : IGraphBuilder
 {
     private readonly Dictionary<Expression, MathExpression> _dependencies = new();
 
