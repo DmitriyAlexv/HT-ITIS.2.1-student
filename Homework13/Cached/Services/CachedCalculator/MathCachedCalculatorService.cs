@@ -1,4 +1,5 @@
-﻿using Hw10.Dto;
+﻿using System.Diagnostics.CodeAnalysis;
+using Hw10.Dto;
 using Hw10.Services;
 
 namespace Cached.Services.CachedCalculator;
@@ -13,6 +14,7 @@ public class MathCachedCalculatorService : IMathCalculatorService
 		_simpleCalculator = simpleCalculator;
 	}
 
+	[ExcludeFromCodeCoverage]
 	public async Task<CalculationMathExpressionResultDto> CalculateMathExpressionAsync(string? expression)
 	{
 		
