@@ -1,0 +1,41 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<form method="post">
+    <input asp-for="Person.Name" placeholder="Имя"/><br />
+    <input asp-for="Person.HitPoints" placeholder="HP"/><br />
+    <input asp-for="Person.AttackModifier" placeholder="Мод.Атаки"/><br />
+    <input asp-for="Person.AttackPerRound" placeholder="Кол-во атак"  /><br />
+    <input asp-for="Person.MinDamage" placeholder="Мин атака"/>
+    <input asp-for="Person.MaxDamage" placeholder="Макс атака"/><br />
+    <input asp-for="Person.DamageModifier" placeholder="Мод. Урон"/><br />
+    <input asp-for="Person.Weapon" placeholder="Оружие" /><br />
+    <input asp-for="Person.ArmorClass" placeholder="Класс брони"/><br />
+    <input type="submit" value="Submit" />
+</form>
+
+@if (Model.Log != null)
+{
+    for (int round = 1; round < Model.Log.Count + 1; round++)
+    {
+        var personTurn = Model.Log[round-1];
+        <p>Ход @personTurn.Attacker.Name</p>
+
+        for (int attempt = 0; attempt < personTurn.AttackAttempts.Count; attempt++)
+        {
+            var att = personTurn.AttackAttempts[attempt];
+            var attackRoll = $"{att.HitChanceRoll.DiceRoll}(+{att.HitChanceRoll.TotalAttack})";
+            var checkAC = $"{(att.HitChanceRoll.IsHit ? "больше" : "меньше")} {personTurn.Defender.ArmorClass}";
+            var damageRoll = $"{att.DamageRoll.DiceRoll}(+{att.DamageRoll.TotalDamage})*{att.HitChanceRoll.DamageMul} наносит {att.ResultDamage} урона";
+            var oponent = $"{personTurn.Defender.Name} ({personTurn.Defender.HitPoints})";
+            <p>@($"{attackRoll} {(att.HitChanceRoll.IsCrit ? "крит попадание": att.HitChanceRoll.DiceRoll == 1 ? "крит промах" : checkAC)} {damageRoll} {oponent}")</p>
+        }
+    }
+    var result = Model.Log[^1].Defender.Id == 0 ? "Вы проиграли" : "Вы победили";
+
+    <p>@result</p>
+}
+
