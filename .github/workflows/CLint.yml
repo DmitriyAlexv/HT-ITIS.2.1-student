@@ -1,0 +1,24 @@
+name: InspectCode
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  
+jobs:
+  inspect-code:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Annotate
+
+        uses: JetBrains/ReSharper-InspectCode@v0.6
+        with:
+          solution: App/App.sln
+
+    permissions:
+      security-events: write
